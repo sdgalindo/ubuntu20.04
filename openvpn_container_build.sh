@@ -1,7 +1,10 @@
 sudo -s << EOF
 OVPN_DATA="ovpn-data"
 docker run --name $OVPN_DATA -v /etc/openvpn busybox
+local ip address
 IPADDRESS=$(ip a | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | sed -n 2p)
+#public ip address
+#IPADDRESS=$(curl ifconfig.me)
 docker-compose run --rm openvpn ovpn_genconfig -u udp://$IPADDRESS
 docker-compose run --rm openvpn ovpn_initpki
 #prompt for CA Key Passphrase
